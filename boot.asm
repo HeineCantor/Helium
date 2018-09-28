@@ -25,7 +25,7 @@ call print_hex
 
 call load_kernel
 
-mov dx, [0x1000]
+mov dx, [KERNEL_ADDR]
 call print_hex				; cosa ho letto nel disco?
 
 call switch_to_pm			; passo alla PROTECTED MODE
@@ -47,7 +47,7 @@ load_kernel:
 
 	mov bx, 0
 	mov es, bx
-	mov bx, 0x1000
+	mov bx, KERNEL_ADDR
 
 	call drive_read
 
@@ -59,7 +59,7 @@ START_PM:					; da qui in poi è PROTECTED MODE
 	mov ebx, pm_label
 	call print_string_32
 	
-	jmp 0x1000
+	jmp KERNEL_ADDR
 	
 	jmp $
 
@@ -72,6 +72,8 @@ device_label: db "BOOT DEVICE: ",0
 err_label: db "ERRORE",0
 
 BOOT_DEVICE: db 0
+
+KERNEL_ADDR equ 0x1000
 
 ; PADDING E FIRMA
 
