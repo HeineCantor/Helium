@@ -2,7 +2,7 @@
 all: helium-os
 
 # Emulazione da parte di QEMU
-run: clean all
+run: all
 	qemu-system-i386 -drive format=raw,file=helium-os
 
 # Immagine del sistema operativo
@@ -14,7 +14,7 @@ kernel.bin: kernel_main.o kernel.o graphics.o
 	i686-elf-ld -o $@ -Ttext 0x1000 $^ --oformat binary
 
 # Kernel core
-%.o: %.cpp
+%.c: %.cpp
 	i686-elf-g++ -ffreestanding -c $< -o $@
 
 # ASM -> ELF OBJECT
