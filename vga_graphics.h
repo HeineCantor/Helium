@@ -12,6 +12,8 @@
 
 typedef uint8_t vga_entry_color;
 
+const uint16_t* video_base = (uint16_t*) VIDEO_ADDRESS;
+
 enum VGA_COLOR
 {
 	//colori scuri

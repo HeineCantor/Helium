@@ -1,17 +1,14 @@
 #include "vga_graphics.h"
 
-vga_entry_color get_vga_color(uint8_t back_color, uint8_t fore_color)
+inline vga_entry_color get_vga_color(uint8_t back_color, uint8_t fore_color)
 {
-	vga_entry_color color = back_color << 4;
-	color |= fore_color;
-	
+	vga_entry_color color = (back_color << 4) | fore_color;
 	return color;
 }
 
 void print_char(const char c, int x, int y, vga_entry_color color)
 {
 	int offset = 0;
-	uint16_t* video_base = (uint16_t*) VIDEO_ADDRESS;
 	
 	offset = (y * VGA3_WIDTH) + x;
 	
