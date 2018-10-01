@@ -1,4 +1,4 @@
-#include "graphics.h"
+#include "vga_graphics.h"
 #include <stdint.h>
 
 int main()

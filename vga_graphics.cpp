@@ -1,4 +1,4 @@
-#include "graphics.h"
+#include "vga_graphics.h"
 
 uint8_t get_color(uint8_t back_color, uint8_t font_color)
 {
