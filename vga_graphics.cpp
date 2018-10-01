@@ -1,59 +1,76 @@
 #include "vga_graphics.h"
 
-uint8_t get_color(uint8_t back_color, uint8_t font_color)
+vga_entry_color get_vga_color(uint8_t back_color, uint8_t fore_color)
 {
-	uint8_t color = back_color << 4;
-	color |= font_color;
+	vga_entry_color color = back_color << 4;
+	color |= fore_color;
 	
 	return color;
 }
 
-// per comporre i 16 bit per la definizione del carattere + il colore
-uint16_t get_vga_entry(uint8_t character, uint8_t color)
-{
-	uint16_t entry = color << 8;
-	entry |= character;
-	
-	return entry;
-}
-
-void print_char(const char c, int x, int y, uint8_t color)
+void print_char(const char c, int x, int y, vga_entry_color color)
 {
 	int offset = 0;
-	uint16_t *ptr_memory = (uint16_t *) VIDEO_MEMORY;
+	uint16_t* video_base = (uint16_t*) VIDEO_ADDRESS;
 	
-	if((x >= 0 && y >= 0) && (x <= VIDEO_WIDTH && y <= VIDEO_HEIGHT))
-	{
-		offset = x + (VIDEO_WIDTH * y);
-	}
+	offset = (y * VGA3_WIDTH) + x;
 	
 	if(color != 0)
-		ptr_memory[offset] = get_vga_entry(c, color);
+	{
+		uint16_t entry = color << 8;
+		entry |= c;
+		video_base[offset] = entry;
+	}
 	else
 	{
-		ptr_memory[offset] &= 0xff00;
-		ptr_memory[offset] |= c;
+		video_base[offset] &= 0xff00;
+		video_base[offset] |= c;
 	}
 }
 
-void print_char(const uint8_t c, uint8_t color)
+void print_string(string str, int x, int y, vga_entry_color color)
 {
-	//dovrebbe inserire un carattere alla posizione del cursore
-}
-
-void print_string(char* string, int x, int y, int str_len, uint8_t color)
-{
-	for(int i = 0; i < str_len; i++)
+	for(int i = 0; i < str_len(str); i++)
 	{
-		print_char(string[i], x+i, y, color);
+		print_char(str[i], x + i, y, color);
 	}
 }
 
-void clear_screen(uint8_t back_color)
+void clear_screen(vga_entry_color color)
 {
-	for(int i = 0; i < VIDEO_WIDTH; i++)
+	for(int i = 0; i < VGA3_HEIGHT; i++)
 	{
-		for(int j = 0; j < VIDEO_HEIGHT; j++)
-			print_char(' ', i, j, back_color);
+		for(int j = 0; j < VGA3_WIDTH; j++)
+		{
+			print_char(' ', j, i, color);
+		}
 	}
+}
+
+void get_cursor(int &x, int &y)
+{
+	uint16_t offset = 0;
+	
+	//la porta data conterrà gli 8 bit bassi dell'offset
+	port_byte_out(PORT_CURSOR_CTRL, 0xf);
+	offset = port_byte_in(PORT_CURSOR_DATA);
+	offset << 8;
+	//la porta data conterrà gli 8 bit alti dell'offset
+	port_byte_out(PORT_CURSOR_CTRL, 0xe);
+	offset += port_byte_in(PORT_CURSOR_DATA);
+	
+	x = offset % VGA3_WIDTH;
+	y = (offset - x) / VGA3_WIDTH;
+}
+
+void set_cursor(int x, int y)
+{
+	uint16_t offset = x + y * VGA3_WIDTH;
+	
+	//la porta data conterrà gli 8 bit bassi dell'offset
+	port_byte_out(PORT_CURSOR_CTRL, 0xf);
+	port_byte_out(PORT_CURSOR_DATA, (uint8_t) (offset & 0x00ff));
+	//la porta data conterrà gli 8 bit alti dell'offset
+	port_byte_out(PORT_CURSOR_CTRL, 0xe);
+	port_byte_out(PORT_CURSOR_DATA, (uint8_t) ((offset >> 8) & 0x00ff));
 }

@@ -10,7 +10,7 @@ helium-os: boot.bin kernel.bin
 	cat $^ > $@
 
 # Kernel binary
-kernel.bin: kernel_main.o kernel.o graphics.o
+kernel.bin: kernel_main.o kernel.o vga_graphics.o io_iasm.o str_util.o
 	i686-elf-ld -o $@ -Ttext 0x1000 $^ --oformat binary
 
 # Kernel core
@@ -27,4 +27,4 @@ kernel.bin: kernel_main.o kernel.o graphics.o
 
 # Pulisce tutti i file tranne i sorgenti
 clean:
-	rm -fr *.bin *.o helium-os
+	rm -fr *.bin *.o

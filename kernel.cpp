@@ -3,8 +3,16 @@
 
 int main()
 {
-	clear_screen(get_color(VGA_CYAN, VGA_WHITE));
-	print_string("[Helium OS]", 35, 0, 11, 0);
+	int x, y = 0;
+	
+	clear_screen(get_vga_color(VGA_CYAN, VGA_WHITE));
+	print_string("[Helium OS]", VGA3_WIDTH / 2 - 5, 0, 0);
+	print_string("Il sistema operativo si e' avviato correttamente!", 0, 2, 0);
+	print_string("Se vedi questo messaggio sono riuscito a caricare tutto, e anche alla grande!", 0, 3, 0);
+	print_string("Ad ogni modo tutte queste stringhe di testo occupano un MACELLO di spazio.", 0, 4, 0);
+	print_string("Cosa c'e' da fare ora?", 0, 6, 0);
+	print_string("   - sistemare la gestione del cursore, che va a cazzi suoi;", 0, 8, 0);
+	print_string("   - creare una shell funzionante, questa e' pezzottissima.", 0, 9, 0);
 	
 	return 0;
 }
