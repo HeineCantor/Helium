@@ -43,7 +43,7 @@ jmp $						; loop infinito
 load_kernel:
 	mov dl, [BOOT_DEVICE]		; leggo un'area di memoria e la inserisco in RAM all'indirizzo 0x9000
 	mov cl, 2
-	mov dh, 5
+	mov dh, 4
 	mov bx, 0
 	mov es, bx
 	mov bx, KERNEL_ADDR
