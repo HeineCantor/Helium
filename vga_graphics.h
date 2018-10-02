@@ -1,3 +1,6 @@
+#ifndef VGA_GRAPHICS
+#define VGA_GRAPHICS
+
 #include <stdint.h>
 #include "io_iasm.h"
 #include "str_util.h"
@@ -11,8 +14,6 @@
 #define PORT_CURSOR_DATA	0x3d5
 
 typedef uint8_t vga_entry_color;
-
-const uint16_t* video_base = (uint16_t*) VIDEO_ADDRESS;
 
 enum VGA_COLOR
 {
@@ -37,7 +38,7 @@ enum VGA_COLOR
 	VGA_WHITE			= 0xf
 };
 
-uint8_t get_vga_color(uint8_t, uint8_t);
+vga_entry_color get_vga_color(uint8_t, uint8_t);
 void print_char(const char c, int x, int y, vga_entry_color);
 void print_char(const char c, int x, int y);
 void print_string(string, int x, int y, vga_entry_color);
@@ -45,3 +46,5 @@ void print_string(string str, int x, int y);
 void clear_screen(vga_entry_color);
 void get_cursor(int &x, int &y);
 void set_cursor(int x, int y);
+
+#endif
