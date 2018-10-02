@@ -39,7 +39,9 @@ enum VGA_COLOR
 
 uint8_t get_vga_color(uint8_t, uint8_t);
 void print_char(const char c, int x, int y, vga_entry_color);
+void print_char(const char c, int x, int y);
 void print_string(string, int x, int y, vga_entry_color);
+void print_string(string str, int x, int y);
 void clear_screen(vga_entry_color);
 void get_cursor(int &x, int &y);
 void set_cursor(int x, int y);

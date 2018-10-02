@@ -1,15 +1,9 @@
 #include "str_util.h"
 
-int str_len(string str)
+unsigned int str_len(string str)
 {
-	char buffer;
-	int counter = 0;
+	register unsigned int i = 0;
+	while(str[i++]) ;
 	
-	do
-	{
-		buffer = *str++;
-		counter++;
-	}while(buffer != 0);
-	
-	return counter;
+	return i;
 }
