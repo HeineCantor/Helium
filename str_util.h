@@ -1,3 +1,3 @@
 typedef const char* string;
 
-int str_len(string str);
+unsigned int str_len(string str);
