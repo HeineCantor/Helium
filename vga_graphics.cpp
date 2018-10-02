@@ -8,15 +8,11 @@ inline vga_entry_color get_vga_color(uint8_t back_color, uint8_t fore_color)
 
 void print_char(const char c, int x, int y, vga_entry_color color)
 {
-	int offset = 0;
+	int offset = (y * VGA3_WIDTH) + x;
 	
-	offset = (y * VGA3_WIDTH) + x;
-	
-	if(color != 0)
+	if(color) // if (color != 0)
 	{
-		uint16_t entry = color << 8;
-		entry |= c;
-		video_base[offset] = entry;
+		video_base[offset] = (color << 8) | c;
 	}
 	else
 	{
@@ -25,11 +21,31 @@ void print_char(const char c, int x, int y, vga_entry_color color)
 	}
 }
 
+void print_char(const char c, int x, int y)
+{
+	int offset = (y * VGA3_WIDTH) + x;
+	
+	video_base[offset] &= 0xff00;
+	video_base[offset] |= c;
+}
+
 void print_string(string str, int x, int y, vga_entry_color color)
 {
-	for(int i = 0; i < str_len(str); i++)
+	int len = str_len(str);
+	
+	for(int i = 0; i < len; i++)
 	{
 		print_char(str[i], x + i, y, color);
+	}
+}
+
+void print_string(string str, int x, int y)
+{
+	int len = str_len(str);
+	
+	for(int i = 0; i < len; i++)
+	{
+		print_char(str[i], x + i, y);
 	}
 }
 
