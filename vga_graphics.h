@@ -38,13 +38,19 @@ enum VGA_COLOR
 	VGA_WHITE			= 0xf
 };
 
-vga_entry_color get_vga_color(uint8_t, uint8_t);
+inline vga_entry_color get_vga_color(uint8_t back_color, uint8_t fore_color)
+{
+	return (back_color << 4) | fore_color;
+}
 void print_char(const char c, int x, int y, vga_entry_color);
 void print_char(const char c, int x, int y);
 void print_string(string, int x, int y, vga_entry_color);
 void print_string(string str, int x, int y);
 void clear_screen(vga_entry_color);
 void get_cursor(int &x, int &y);
+void get_cursor(uint16_t &offset);
+uint16_t get_cursor();
 void set_cursor(int x, int y);
+void set_cursor(uint16_t offset);
 
 #endif
