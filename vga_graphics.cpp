@@ -1,6 +1,15 @@
 #include "vga_graphics.h"
 
-void print_char(const char c, int x, int y, vga_entry_color color)
+void new_line()
+{
+	int x, y;
+	
+	get_cursor(x, y);
+	
+	set_cursor(0, y+1);
+}
+
+void put_char(const char c, int x, int y, vga_entry_color color)
 {
 	uint16_t* video_base = (uint16_t*) VIDEO_ADDRESS;
 	int offset = (y * VGA3_WIDTH) + x;
@@ -14,15 +23,13 @@ void print_char(const char c, int x, int y, vga_entry_color color)
 		video_base[offset] &= 0xff00;
 		video_base[offset] |= c;
 	}
+	
+	set_cursor(x+1, y);
 }
 
-void print_char(const char c, int x, int y)
+void put_char(const char c, int x, int y)
 {
-	uint16_t* video_base = (uint16_t*) VIDEO_ADDRESS;
-	int offset = (y * VGA3_WIDTH) + x;
-	
-	video_base[offset] &= 0xff00;
-	video_base[offset] |= c;
+	put_char(c, x, y, 0);
 }
 
 void print_string(string str, int x, int y, vga_entry_color color)
@@ -31,22 +38,31 @@ void print_string(string str, int x, int y, vga_entry_color color)
 	
 	for(int i = 0; i < len; i++)
 	{
-		print_char(str[i], x + i, y, color);
+		switch(str[i])
+		{
+			case '\n':
+				new_line();
+				break;
+			default:
+				put_char(str[i], x + i, y, color);
+		}
 	}
-	
-	set_cursor(get_cursor() + len);
 }
 
 void print_string(string str, int x, int y)
 {
-	int len = str_len(str);
-	
-	for(int i = 0; i < len; i++)
-	{
-		print_char(str[i], x + i, y);
-	}
-	
-	set_cursor(get_cursor() + len);
+	print_string(str, x, y, 0);
+}
+
+void println_string(string str, int x, int y, vga_entry_color color)
+{
+	print_string(str, x, y, 0);
+	new_line();
+}
+
+void println_string(string str, int x, int y)
+{
+	println_string(str, x, y, 0);
 }
 
 void clear_screen(vga_entry_color color)
@@ -55,7 +71,7 @@ void clear_screen(vga_entry_color color)
 	{
 		for(int j = 0; j < VGA3_WIDTH; j++)
 		{
-			print_char(' ', j, i, color);
+			put_char(' ', j, i, color);
 		}
 	}
 	
@@ -69,21 +85,24 @@ void get_cursor(int &x, int &y)
 	x = offset % VGA3_WIDTH;
 	y = (offset - x) / VGA3_WIDTH;
 }
+
 void get_cursor(uint16_t &offset)
 {
 	offset = get_cursor();
 }
+
 uint16_t get_cursor()
 {
 	uint16_t offset = 0;
 	
 	//la porta data conterrà gli 8 bit bassi dell'offset
-	port_byte_out(PORT_CURSOR_CTRL, 0xf);
-	offset = port_byte_in(PORT_CURSOR_DATA);
-	offset << 8;
-	//la porta data conterrà gli 8 bit alti dell'offset
 	port_byte_out(PORT_CURSOR_CTRL, 0xe);
-	offset += (port_byte_in(PORT_CURSOR_DATA));
+	offset = port_byte_in(PORT_CURSOR_DATA);
+	offset = offset << 8;
+	//la porta data conterrà gli 8 bit alti dell'offset
+	port_byte_out(PORT_CURSOR_CTRL, 0xf);
+	offset |= (port_byte_in(PORT_CURSOR_DATA));
+	
 	
 	return offset;
 }
@@ -101,5 +120,5 @@ void set_cursor(uint16_t offset)
 	port_byte_out(PORT_CURSOR_DATA, (uint8_t) (offset & 0x00ff));
 	//la porta data conterrà gli 8 bit alti dell'offset
 	port_byte_out(PORT_CURSOR_CTRL, 0xe);
-	port_byte_out(PORT_CURSOR_DATA, (uint8_t) ((offset >> 8) & 0x00ff));
+	port_byte_out(PORT_CURSOR_DATA, (uint8_t) (offset >> 8));
 }

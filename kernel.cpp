@@ -1,6 +1,20 @@
 #include "vga_graphics.h"
 #include <stdint.h>
 
+unsigned char itoa(unsigned int num)
+{
+	return (num + 48);
+}
+
+void printbits(uint16_t val)
+{
+	for (int i = 0; i < 16; i++)
+	{
+		char c = ((val >> i) & 1) ? '1' : '0';
+		put_char(c,15-i,0);
+	}
+}
+
 int main()
 {
 	int x, y = 0;

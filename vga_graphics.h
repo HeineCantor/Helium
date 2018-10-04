@@ -42,10 +42,14 @@ inline vga_entry_color get_vga_color(uint8_t back_color, uint8_t fore_color)
 {
 	return (back_color << 4) | fore_color;
 }
-void print_char(const char c, int x, int y, vga_entry_color);
-void print_char(const char c, int x, int y);
+
+void new_line();
+void put_char(const char c, int x, int y, vga_entry_color);
+void put_char(const char c, int x, int y);
 void print_string(string, int x, int y, vga_entry_color);
 void print_string(string str, int x, int y);
+void println_string(string str, int x, int y, vga_entry_color color);
+void println_string(string str, int x, int y);
 void clear_screen(vga_entry_color);
 void get_cursor(int &x, int &y);
 void get_cursor(uint16_t &offset);
