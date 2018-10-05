@@ -1,12 +1,12 @@
 #include "vga_graphics.h"
-#include <stdint.h>
+#include "tipi.h"
 
 unsigned char itoa(unsigned int num)
 {
 	return (num + 48);
 }
 
-void printbits(uint16_t val)
+void printbits(u16 val)
 {
 	for (int i = 0; i < 16; i++)
 	{

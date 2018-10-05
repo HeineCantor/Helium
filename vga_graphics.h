@@ -1,7 +1,7 @@
 #ifndef VGA_GRAPHICS
 #define VGA_GRAPHICS
 
-#include <stdint.h>
+#include "tipi.h"
 #include "io_iasm.h"
 #include "str_util.h"
 
@@ -13,7 +13,7 @@
 #define PORT_CURSOR_CTRL	0x3d4
 #define PORT_CURSOR_DATA	0x3d5
 
-typedef uint8_t vga_entry_color;
+typedef u8 vga_entry_color;
 
 enum VGA_COLOR
 {
@@ -38,7 +38,7 @@ enum VGA_COLOR
 	VGA_WHITE			= 0xf
 };
 
-inline vga_entry_color get_vga_color(uint8_t back_color, uint8_t fore_color)
+inline vga_entry_color get_vga_color(u8 back_color, u8 fore_color)
 {
 	return (back_color << 4) | fore_color;
 }
@@ -52,9 +52,9 @@ void println_string(string str, int x, int y, vga_entry_color color);
 void println_string(string str, int x, int y);
 void clear_screen(vga_entry_color);
 void get_cursor(int &x, int &y);
-void get_cursor(uint16_t &offset);
-uint16_t get_cursor();
+void get_cursor(u16 &offset);
+u16 get_cursor();
 void set_cursor(int x, int y);
-void set_cursor(uint16_t offset);
+void set_cursor(u16 offset);
 
 #endif
