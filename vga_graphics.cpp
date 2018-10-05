@@ -16,7 +16,6 @@ void put_char(const char c, int x, int y, vga_entry_color color)
 void put_char(const char c, u16 offset, vga_entry_color color)
 {
 	u16* video_base = (u16*) VIDEO_ADDRESS;
-	u16 offset = (y * VGA3_WIDTH) + x;
 	
 	if(color) // if (color != 0)
 	{
@@ -31,10 +30,6 @@ void put_char(const char c, u16 offset, vga_entry_color color)
 	set_cursor(offset+1);
 }
 
-void put_char(const char c, int x, int y)
-{
-	put_char(c, x, y, 0);
-}
 void put_char(const char c, u16 offset)
 {
 	put_char(c, offset, 0);
@@ -117,11 +112,10 @@ u16 get_cursor()
 
 void set_cursor(int x, int y)
 {
-	u16 offset = x + y * VGA3_WIDTH;
-	set_cursor(offset);
+	set_cursor(get_vga_offset(x,y));
 }
 
-void set_cursor(uint16_t offset)
+void set_cursor(u16 offset)
 {
 	//la porta data conterrà gli 8 bit bassi dell'offset
 	port_byte_out(PORT_CURSOR_CTRL, 0xf);
@@ -137,13 +131,32 @@ void print_hex(u8 num, int x, int y)
 	put_char('0', offset++);
 	put_char('x', offset++);
 	put_char(get_halfbyte_char(num >> 4), offset++);
-	put_char(get_halfbyte_char(num & 0x0f), offset);
+	put_char(get_halfbyte_char(num), offset);
 }
-void print_hex(u16 num, int x, int y) // TODO
+void print_hex(u16 num, int x, int y)
 {
+	u16 offset = get_vga_offset(x,y);
+	put_char('0', offset++);
+	put_char('x', offset++);
 	
+	for (int i = 16 - 4; i >= 0; i-=4)
+		put_char(get_halfbyte_char(num >> i), offset++);
 }
-void print_hex(u32 num, int x, int y) // TODO
+void print_hex(u32 num, int x, int y)
 {
+	u16 offset = get_vga_offset(x,y);
+	put_char('0', offset++);
+	put_char('x', offset++);
 	
+	for (int i = 32 - 4; i >= 0; i-=4)
+		put_char(get_halfbyte_char(num >> i), offset++);
+}
+
+void print_bits(u16 val, u16 offset)
+{
+	for (int i = 15; i >= 0; i--)
+	{
+		char c = ((val >> i) & 1) ? '1' : '0';
+		put_char(c,offset++);
+	}
 }

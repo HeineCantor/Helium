@@ -6,15 +6,6 @@ unsigned char itoa(unsigned int num)
 	return (num + 48);
 }
 
-void printbits(u16 val)
-{
-	for (int i = 0; i < 16; i++)
-	{
-		char c = ((val >> i) & 1) ? '1' : '0';
-		put_char(c,15-i,0);
-	}
-}
-
 int main()
 {
 	int x, y = 0;
@@ -27,6 +18,5 @@ int main()
 	print_string("Cosa c'e' da fare ora?", 0, 6, 0);
 	print_string("   - sistemare la gestione del cursore, che va a cazzi suoi;", 0, 8, 0);
 	print_string("   - creare una shell funzionante, questa e' pezzottissima.", 0, 9, 0);
-	
 	return 0;
 }
