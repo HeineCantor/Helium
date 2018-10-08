@@ -49,30 +49,10 @@ void print(string str, u16 offset, vga_entry_color color)
 	}
 }
 
-void print(string str, u16 offset)
-{
-	print(str, offset, 0);
-}
-
-void print(string str)
-{
-	print(str, get_cursor(), 0);
-}
-
 void println(string str, u16 offset, vga_entry_color color)
 {
 	print(str, offset, 0);
 	new_line();
-}
-
-void println(string str, u16 offset)
-{
-	println(str, offset, 0);
-}
-
-void println(string str)
-{
-	println(str, get_cursor(), 0);
 }
 
 void clear_screen(vga_entry_color color)
