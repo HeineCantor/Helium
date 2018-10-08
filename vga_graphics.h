@@ -63,8 +63,8 @@ void put_char(const char c, int x, int y, vga_entry_color color = 0);
 void put_char(const char c, u16 offset, vga_entry_color color = 0);
 
 //Stampa di stringhe
-void print(string, u16 offset = getcursor(), vga_entry_color color = 0);
-void println(string str, u16 offset = getcursor(), vga_entry_color color = 0);
+void print(string, u16 offset = get_cursor(), vga_entry_color color = 0);
+void println(string str, u16 offset = get_cursor(), vga_entry_color color = 0);
 
 //Stampa di valori numerici
 void print_hex(u8 num, int x, int y);
