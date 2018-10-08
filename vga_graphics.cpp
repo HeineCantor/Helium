@@ -11,7 +11,7 @@ void new_line()
 
 void put_char(const char c, int x, int y, vga_entry_color color)
 {
-	put_char(c, (y * VGA3_WIDTH) + x, color);
+	put_char(c, get_vga_offset(x, y), color);
 }
 
 void put_char(const char c, u16 offset, vga_entry_color color)
