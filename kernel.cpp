@@ -1,22 +1,15 @@
 #include "vga_graphics.h"
 #include "tipi.h"
 
-unsigned char itoa(unsigned int num)
-{
-	return (num + 48);
-}
-
 int main()
 {
 	int x, y = 0;
+	const string LABEL_TITLE = "[Helium OS V0.1]";
 	
 	clear_screen(get_vga_color(VGA_CYAN, VGA_WHITE));
-	print("[Helium OS]", VGA3_WIDTH / 2 - 5, 0, 0);
-	print("Il sistema operativo si e' avviato correttamente!", 0, 2, 0);
-	print("Se vedi questo messaggio sono riuscito a caricare tutto, e anche alla grande!", 0, 3, 0);
-	print("Ad ogni modo tutte queste stringhe di testo occupano un MACELLO di spazio.", 0, 4, 0);
-	print("Cosa c'e' da fare ora?", 0, 6, 0);
-	print("   - sistemare la gestione del cursore, che va a cazzi suoi;", 0, 8, 0);
-	print("   - creare una shell funzionante, questa e' pezzottissima.", 0, 9, 0);
+	println(LABEL_TITLE, get_vga_offset((VGA3_WIDTH - str_len(LABEL_TITLE))/2, 0));
+	println("\nCiao! Benvenuto in Helium V0.1! Per adesso quello che siamo riusciti a fare e': una libreria driver video VGA 3, con scrittura e varie funzionalita'!");
+	
+	print("\nInserisci un comando: ");
 	return 0;
 }

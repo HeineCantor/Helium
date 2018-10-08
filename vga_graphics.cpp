@@ -31,7 +31,7 @@ void put_char(const char c, u16 offset, vga_entry_color color)
 	set_cursor(offset+1);
 }
 
-void print(string str, int x, int y, vga_entry_color color)
+void print(string str, u16 offset, vga_entry_color color)
 {
 	int len = str_len(str);
 	
@@ -41,27 +41,38 @@ void print(string str, int x, int y, vga_entry_color color)
 		{
 			case '\n':
 				new_line();
+				offset = get_cursor();
 				break;
 			default:
-				put_char(str[i], x + i, y, color);
+				put_char(str[i], offset++, color);
 		}
 	}
 }
 
-void print(string str, int x, int y)
+void print(string str, u16 offset)
 {
-	print(str, x, y, 0);
+	print(str, offset, 0);
 }
 
-void println(string str, int x, int y, vga_entry_color color)
+void print(string str)
 {
-	print(str, x, y, 0);
+	print(str, get_cursor(), 0);
+}
+
+void println(string str, u16 offset, vga_entry_color color)
+{
+	print(str, offset, 0);
 	new_line();
 }
 
-void println(string str, int x, int y)
+void println(string str, u16 offset)
 {
-	println(str, x, y, 0);
+	println(str, offset, 0);
+}
+
+void println(string str)
+{
+	println(str, get_cursor(), 0);
 }
 
 void clear_screen(vga_entry_color color)

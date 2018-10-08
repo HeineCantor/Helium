@@ -38,14 +38,17 @@ enum VGA_COLOR
 	VGA_WHITE			= 0xf
 };
 
+//Metodi utili INLINE
 inline vga_entry_color get_vga_color(u8 back_color, u8 fore_color)
 {
 	return (back_color << 4) | fore_color;
 }
+
 inline u16 get_vga_offset(int x, int y)
 {
 	return x + y*VGA3_WIDTH;
 }
+
 inline char get_halfbyte_char(u8 num)
 {
 	num = num & 0x0f;
@@ -60,10 +63,12 @@ void put_char(const char c, int x, int y, vga_entry_color color);
 void put_char(const char c, u16 offset, vga_entry_color color);
 
 //Stampa di stringhe
-void print(string, int x, int y, vga_entry_color);
-void print(string str, int x, int y);
-void println(string str, int x, int y, vga_entry_color color);
-void println(string str, int x, int y);
+void print(string, u16 offset, vga_entry_color);
+void print(string str, u16 offset);
+void print(string str);
+void println(string str, u16 offset, vga_entry_color color);
+void println(string str, u16 offset);
+void println(string str);
 
 //Stampa di valori numerici
 void print_hex(u8 num, int x, int y);
