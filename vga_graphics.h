@@ -58,9 +58,16 @@ inline char get_halfbyte_char(u8 num)
 //Formattazione
 void new_line();
 
+//Cursore
+void get_cursor(int &x, int &y);
+u16 get_cursor();
+
+void set_cursor(int x, int y);
+void set_cursor(u16 offset);
+
 //Inserimento caratteri
-void put_char(const char c, int x, int y, vga_entry_color color = 0);
-void put_char(const char c, u16 offset, vga_entry_color color = 0);
+void put_char(const char c, int x, int y, vga_entry_color color);
+void put_char(const char c, u16 offset, vga_entry_color color);
 
 //Stampa di stringhe
 void print(string, u16 offset = get_cursor(), vga_entry_color color = 0);
@@ -75,12 +82,5 @@ void print_bits(u16 val, u16 offset);
 
 //Pulizia schermo
 void clear_screen(vga_entry_color);
-
-//Cursore
-void get_cursor(int &x, int &y);
-u16 get_cursor();
-
-void set_cursor(int x, int y);
-void set_cursor(u16 offset);
 
 #endif
