@@ -52,23 +52,33 @@ inline char get_halfbyte_char(u8 num)
 	return num < 10 ? num+48 : num + 55;
 }
 
+//Formattazione
 void new_line();
-void put_char(const char c, int x, int y, vga_entry_color);
-void put_char(const char c, u16 offset);
-void put_char(const char c, u16 offset, vga_entry_color color);
+
+//Inserimento caratteri
 void put_char(const char c, int x, int y, vga_entry_color color);
-void print_string(string, int x, int y, vga_entry_color);
-void print_string(string str, int x, int y);
+void put_char(const char c, u16 offset, vga_entry_color color);
+
+//Stampa di stringhe
+void print(string, int x, int y, vga_entry_color);
+void print(string str, int x, int y);
+void println(string str, int x, int y, vga_entry_color color);
+void println(string str, int x, int y);
+
+//Stampa di valori numerici
 void print_hex(u8 num, int x, int y);
 void print_hex(u16 num, int x, int y);
 void print_hex(u32 num, int x, int y);
+
 void print_bits(u16 val, u16 offset);
-void println_string(string str, int x, int y, vga_entry_color color);
-void println_string(string str, int x, int y);
+
+//Pulizia schermo
 void clear_screen(vga_entry_color);
+
+//Cursore
 void get_cursor(int &x, int &y);
-void get_cursor(u16 &offset);
 u16 get_cursor();
+
 void set_cursor(int x, int y);
 void set_cursor(u16 offset);
 

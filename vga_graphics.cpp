@@ -13,6 +13,7 @@ void put_char(const char c, int x, int y, vga_entry_color color)
 {
 	put_char(c, (y * VGA3_WIDTH) + x, color);
 }
+
 void put_char(const char c, u16 offset, vga_entry_color color)
 {
 	u16* video_base = (u16*) VIDEO_ADDRESS;
@@ -30,12 +31,7 @@ void put_char(const char c, u16 offset, vga_entry_color color)
 	set_cursor(offset+1);
 }
 
-void put_char(const char c, u16 offset)
-{
-	put_char(c, offset, 0);
-}
-
-void print_string(string str, int x, int y, vga_entry_color color)
+void print(string str, int x, int y, vga_entry_color color)
 {
 	int len = str_len(str);
 	
@@ -52,20 +48,20 @@ void print_string(string str, int x, int y, vga_entry_color color)
 	}
 }
 
-void print_string(string str, int x, int y)
+void print(string str, int x, int y)
 {
-	print_string(str, x, y, 0);
+	print(str, x, y, 0);
 }
 
-void println_string(string str, int x, int y, vga_entry_color color)
+void println(string str, int x, int y, vga_entry_color color)
 {
-	print_string(str, x, y, 0);
+	print(str, x, y, 0);
 	new_line();
 }
 
-void println_string(string str, int x, int y)
+void println(string str, int x, int y)
 {
-	println_string(str, x, y, 0);
+	println(str, x, y, 0);
 }
 
 void clear_screen(vga_entry_color color)
@@ -87,11 +83,6 @@ void get_cursor(int &x, int &y)
 	
 	x = offset % VGA3_WIDTH;
 	y = (offset - x) / VGA3_WIDTH;
-}
-
-void get_cursor(u16 &offset)
-{
-	offset = get_cursor();
 }
 
 u16 get_cursor()
@@ -128,28 +119,28 @@ void set_cursor(u16 offset)
 void print_hex(u8 num, int x, int y)
 {	
 	u16 offset = get_vga_offset(x,y);
-	put_char('0', offset++);
-	put_char('x', offset++);
-	put_char(get_halfbyte_char(num >> 4), offset++);
-	put_char(get_halfbyte_char(num), offset);
+	put_char('0', offset++, 0);
+	put_char('x', offset++, 0);
+	put_char(get_halfbyte_char(num >> 4), offset++, 0);
+	put_char(get_halfbyte_char(num), offset, 0);
 }
 void print_hex(u16 num, int x, int y)
 {
 	u16 offset = get_vga_offset(x,y);
-	put_char('0', offset++);
-	put_char('x', offset++);
+	put_char('0', offset++, 0);
+	put_char('x', offset++, 0);
 	
 	for (int i = 16 - 4; i >= 0; i-=4)
-		put_char(get_halfbyte_char(num >> i), offset++);
+		put_char(get_halfbyte_char(num >> i), offset++, 0);
 }
 void print_hex(u32 num, int x, int y)
 {
 	u16 offset = get_vga_offset(x,y);
-	put_char('0', offset++);
-	put_char('x', offset++);
+	put_char('0', offset++, 0);
+	put_char('x', offset++, 0);
 	
 	for (int i = 32 - 4; i >= 0; i-=4)
-		put_char(get_halfbyte_char(num >> i), offset++);
+		put_char(get_halfbyte_char(num >> i), offset++, 0);
 }
 
 void print_bits(u16 val, u16 offset)
@@ -157,6 +148,6 @@ void print_bits(u16 val, u16 offset)
 	for (int i = 15; i >= 0; i--)
 	{
 		char c = ((val >> i) & 1) ? '1' : '0';
-		put_char(c,offset++);
+		put_char(c,offset++,0);
 	}
 }
