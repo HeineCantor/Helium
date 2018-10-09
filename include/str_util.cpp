@@ -15,8 +15,29 @@ bool is_numeric(string s)
 	char c;
 	
 	while(c = s[i])
-		if (c < 48 || c > 57)
+		if (c < '0' || c > '9')
 			return false;
 	
 	return true;
+}
+
+void to_upper(char* s)
+{
+	register unsigned int i = 0;
+	char c;
+	
+	while(c = s[i])
+		if (c >= 'a' && c <= 'z')
+			c -= 32;
+		
+}
+void to_lower(char* s)
+{
+	register unsigned int i = 0;
+	char c;
+	
+	while(c = s[i])
+		if (c >= 'A' && c <= 'Z')
+			c += 32;
+		
 }
