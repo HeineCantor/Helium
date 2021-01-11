@@ -1,0 +1,44 @@
+63-56: 	BASE 31-24
+55: 	GRANULARITY
+54: 	DEFAULT OPERATION SIZE
+53: 	64-BIT CODE SEGMENT
+52: 	AVL AVAIABLE for use by system software
+51-48: 	SEGMENT LIMIT 19-16
+47: 	SEGMENT PRESENT
+46-45: 	PRIVILEGE (DESCRIPTOR PRIVILEGE LEVEL)
+44: 	DESCRIPTOR TYPE
+43-40: 	TYPE
+39-32: 	BASE 23-16
+31-16: 	BASE 15-0
+15-0: 	SEGMENT LIMIT 15-0
+
+NOME		BIT	DESCRIZIONE
+
+BASE 		(32)	indirizzo base da cui partire col segmento
+SEGMENT LIMIT	(20)  	limite di dimensione del segmento (può essere ampliato con GRANULARITY)
+PRESENT		(1)	1 se il segmento è attualmente presente in memoria (memoria virtuale)
+PRIVILEGE	(2)	00 è privilegio massimo, 11 minimo (penso)
+DESCRIPTOR TYPE (1)	1 per segmenti dato, 0 per TRAPS
+TYPE		(4)	BIT CODE (se è un segmento di codice), BIT CONFORMING (se metti 0 un segmento con privilegi più bassi non può chiamare questo), BIT READABLE (1 se è leggibile, 0 se è solo eseguibile), BIT ACCESSED (si imposta a 0, perché verrà modificato quando viene effettuato un accesso a questo segmento)
+GRANULARITY	(1)	se impostato 1, moltiplica il limite per 4K (16*16*16) ovvero fa uno shift di 3 cifre a sinistra
+DEFAULT OP. S.	(1)	se impostato a 0 modalità 16 bit, se impostato a 1 modalità 32 bit
+64-BIT CODE S.	(1)	se impostato a 1 modalità 64 bit
+AVL		(1)	non lo so cos'è
+
+CONFIGURAZIONE BASE FLAT MODEL (2 segmenti che si sovrascrivono)
+
+Segmento CODE
+
+Base: 	0x0
+Limit: 	0xfffff
+Primi flag: PRESENT: 1, PRIVILEGE: 00, DESCRIPTOR TYPE: 1
+Type flag: CODE: 1, CONFORMING: 0, READABLE: 1, ACCESSED: 0
+Secondi flag: GRANULARITY: 1, 32-BIT DEFAULT: 1, 64-BIT SEGMENT: 0, AVL: 0
+
+Segmento DATA
+
+Base: 	0x0
+Limit: 	0xfffff
+Primi flag: PRESENT: 1, PRIVILEGE: 00, DESCRIPTOR TYPE: 1
+Type flag: CODE: 0, EXPAND DOWN: 0, WRITABLE: 1, ACCESSED: 0 //cambiano perché probabilmente non è un segmento di tipo codice
+Secondi flag: GRANULARITY: 1, 32-BIT DEFAULT: 1, 64-BIT SEGMENT: 0, AVL: 0
